@@ -1,0 +1,198 @@
+module memory(input memread,memwrite,clk,input[4:0] address,input[7:0] data,output[7:0] memory_out);
+  reg[7:0] mem[0:31];
+  initial begin $readmemb("mem_set.txt",mem); end 
+  assign memory_out=(memread)?mem[address]:8'bz;
+  always@(posedge clk)begin
+    if(memwrite)
+      mem[address]<=data;
+  end
+endmodule
+
+module stack(input clk,rst,push,pop,tos,input[7:0] din,output reg[7:0] dout);
+  reg[4:0] pointer;
+  reg[7:0] stack[0:31];
+  integer j;
+  always@(posedge clk)begin
+    if(rst) begin
+      pointer=5'b0;
+      for(j=0;j<32;j=j+1)
+        stack[j]=8'b0;
+    end
+    else begin
+      if(push)begin
+        stack[pointer]<=din;
+        pointer=pointer+1;
+      end
+      else if(pop)begin
+        pointer=pointer-1;
+        dout<=stack[pointer];
+        stack[pointer]<=8'b0;
+      end
+      else if(tos)
+        dout<=stack[pointer-1];
+      else
+        dout<=8'bz;
+    end
+  end
+endmodule
+
+module mux(a,b,select,out);
+  parameter n;
+  input [n-1:0] a,b;
+  input select;
+  output [n-1:0] out;
+  assign out=(select)?b:a;
+endmodule
+
+module register1(clk,rst,load,din,dout);
+  parameter n;
+  input clk,rst,load;
+  input[n-1:0] din;
+  output reg[n-1:0] dout;
+  always@(posedge clk,posedge rst)begin
+    if(rst)
+      dout<=0;
+    else if(load)
+      dout<=din;
+    else
+      dout<=dout;
+  end
+endmodule
+
+module register2(clk,rst,din,dout);
+  parameter n;
+  input clk,rst;
+  input [n-1:0] din;
+  output reg[n-1:0] dout;
+  always@(posedge clk,posedge rst)begin
+    if(rst)
+      dout<=0;
+    else
+      dout<=din;
+  end
+endmodule
+    
+module alu(input[7:0] a,b,input[1:0] aluop,output reg[7:0] out);
+  always@(a,b,aluop)begin
+    out=8'b0;
+    case(aluop)
+      2'b00:out=a+b;
+      2'b01:out=b-a;
+      2'b10:out=a&b;
+      2'b11:out=~a;
+    endcase
+  end
+endmodule
+
+module datapath(input clk,rst,pcsrc,pccond,pcwrite,memread,memwrite,irwrite,iord,stacksrc,push,pop,tos,lda,ldb,srca,srcb,input[1:0] aluop,output[2:0] opcode);
+  wire [4:0]k1,k2,k3,k5,k6,k7;
+  wire k4,z;
+  wire [7:0] k8,k9,k10,k11,k12,k13,k14,k15,k16,k17,k18,k19,k20;
+  mux #(5) a1(k1,k2,pcsrc,k3);
+  register1#(5) a2(clk,rst,k4,k3,k5);
+  mux #(5) a3(k6,k5,iord,k7);
+  memory a4(memread,mrmwrite,clk,k7,k11,k8);
+  register1 #(8) a5(clk,rst,irwrite,k8,k10);
+  register2 #(8) a6(clk,rst,k8,k9);
+  mux #(8) a7(k9,k12,stacksrc,k13);
+  stack a8(clk,rst,push,pop,tos,k13,k14);
+  register1 #(8) a9(clk,rst,lda,k14,k11);
+  register1 #(8) a10(clk,rst,ldb,k14,k15);
+  mux #(8) a11(k16,k11,srca,k17);
+  mux #(8) a12(k15,k20,srcb,k18);
+  alu a13(k17,k18,aluop,k19);
+  register2 #(8) a14(clk,rst,k19,k12);
+  assign k2=k10[4:0];
+  assign k6=k10[4:0];
+  assign k16=k5[4]?{3'b111,k5}:{3'b000,k5};
+  assign k1=k19[4:0];
+  assign k4=((pccond && z)||(pcwrite));
+  assign z=~(|(k14));
+  assign opcode=k10[7:5];
+  assign k20=8'b00000001;
+endmodule
+  
+module controller(input clk,rst,input[2:0] opcode,output reg pcsrc,pccond,iord,pcwrite,memread,memwrite,irwrite,stacksrc,push,pop,tos,lda,ldb,srca,srcb,output reg[1:0]aluop);
+  reg[3:0] ps,ns;
+  always@(posedge clk)
+    if(rst)ps<=4'b0000;else ps<=ns;
+  always@(ps,ns)begin
+    ns=0;
+    case(ps)
+      0:ns=1;
+      1:begin
+        case(opcode)
+          3'b111:ns=2;
+          3'b110:ns=3;
+          3'b100:ns=4;
+          default ns=6;
+        endcase
+      end 
+      2:ns=0;
+      3:ns=0;
+      4:ns=5;
+      5:ns=0;
+      6:ns=7;
+      7:begin
+        case(opcode)
+           3'b000:ns=9;
+           3'b001:ns=9;
+           3'b010:ns=9;
+           3'b011:ns=11;
+           default ns=8;
+        endcase
+      end
+      8:ns=13;
+      9:ns=10;
+      10:ns=11;
+      11:ns=12;
+      12:ns=0;
+      13:ns=0;
+      default ns=0;
+    endcase
+  end
+  always@(ps)begin
+    {pcsrc,pccond,pcwrite,memread,memwrite,irwrite,stacksrc,push,pop,tos,lda,ldb,srca,srcb}=0;
+    aluop=0;
+    ns=0;
+    case(ps)
+      0:begin pcsrc=0;pcwrite=1;iord=1;memread=1;irwrite=1;aluop=2'b00;srca=0;srcb=1;end
+      1:tos=1;
+      2:begin pccond=1;pcsrc=1;end
+      3:begin pcwrite=1;pcsrc=1;end
+      4:begin iord=0;memread=1;end
+      5:begin stacksrc=0;push=1;end
+      6:pop=1;
+      7:lda=1;
+      8:begin iord=0;memwrite=1;end
+      9:pop=1;
+      10:ldb=1;
+      13:begin memwrite=1;iord=0;end
+      11:begin srca=1;srcb=0;aluop=opcode[1:0];end
+      12:begin stacksrc=1;push=1;end
+    endcase
+  end
+endmodule
+       
+module multiMips(input clk,rst);
+  wire pcsrc,pccond,pcwrite,memread,memwrite,irwrite,iord,stacksrc,push,pop,tos,lda,ldb,srca,scrb;
+  wire[2:0] opcode;
+  wire[1:0] aluop;
+  datapath a(clk,rst,pcsrc,pccond,pcwrite,memread,memwrite,irwrite,iord,stacksrc,push,pop,tos,lda,ldb,srca,srcb,aluop,opcode);
+  controller b(clk,rst,opcode,pcsrc,pccond,iord,pcwrite,memread,memwrite,irwrite,stacksrc,push,pop,tos,lda,ldb,srca,srcb,aluop);
+endmodule
+  
+module test();
+  reg clk,rst;
+  multiMips uut(clk,rst);
+  always #10000 clk=~clk;
+  initial begin
+    clk=0;
+    rst=1;
+    #20000
+    rst=0;
+    #200000
+    #11000000
+    $stop;
+  end
+endmodule

@@ -1,0 +1,196 @@
+m255
+K3
+13
+cModel Technology
+Z0 d\\Mac\Home\Desktop\ca3
+valu
+!i10b 1
+Z1 !s100 95R3GdL1Jbc[QNEM:?=dh1
+Z2 I3[;3XEZFZn@9l@]aV[VOR1
+Z3 VYd7BY>L1cbigH[bb`Qf3L0
+Z4 d\\Mac\Home\Desktop\multicycle
+Z5 w1559191900
+Z6 8//Mac/Home/Desktop/multicycle/multicycle.v
+Z7 F//Mac/Home/Desktop/multicycle/multicycle.v
+L0 75
+Z8 OV;L;10.1d;51
+r1
+!s85 0
+31
+Z9 !s108 1559191900.948000
+Z10 !s107 //Mac/Home/Desktop/multicycle/multicycle.v|
+Z11 !s90 -reportprogress|300|-work|work|//Mac/Home/Desktop/multicycle/multicycle.v|
+!s101 -O0
+Z12 o-work work -O0
+vcontroller
+!i10b 1
+Z13 !s100 4FaoR[Sk]EYkFLWc80hNX3
+Z14 I63Llcom9MNKI1RDPXzAF30
+Z15 VX6YCimZh74JzhU]PM]V=<2
+R4
+R5
+R6
+R7
+Z16 L0 115
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!s101 -O0
+R12
+vdatapath
+!i10b 1
+!s100 hY?S9Xgl56RFLhA@fEzYD3
+IJd7ejLdSjGWWEFeIljH6U0
+Z17 VPfhnNIiEffe4Q]H7i@NRN0
+R4
+R5
+R6
+R7
+L0 87
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!s101 -O0
+R12
+vmemory
+!i10b 1
+Z18 !s100 SUC:3I5^af;6jj>k?b?Cl1
+Z19 I_Ih0diO6>1J]M49<B8WOW2
+Z20 VK58?zIf@G@Te>_879SOn90
+R4
+R5
+R6
+R7
+L0 1
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!s101 -O0
+R12
+vmultiMips
+!i10b 1
+Z21 !s100 `S^4hiZ<G@_HNEY=>kC2Z3
+Z22 IXeGEUnYPzXm;S9fK3]h9f3
+Z23 VBzGo9C^CW<f>dhbS@o]5H0
+R4
+R5
+R6
+R7
+Z24 L0 177
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!s101 -O0
+R12
+Z25 nmulti@mips
+vmux
+!i10b 1
+Z26 !s100 X2e9YC2:DD6^O<=oo?oUF2
+Z27 IJ??M_d:5j3^Y4H0Emcz7c0
+Z28 VXSM4B[3@6R2:_kHidc8992
+R4
+R5
+R6
+R7
+L0 39
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!s101 -O0
+R12
+vregister1
+!i10b 1
+Z29 !s100 L`IchN=ZbiX;MicD_1TWH3
+Z30 IzQY4>bSMbbYmZ=b8:6kBa2
+Z31 VQ__JS=Q9PKEH_K3mBmY0=1
+R4
+R5
+R6
+R7
+L0 47
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!s101 -O0
+R12
+vregister2
+!i10b 1
+Z32 !s100 j^Y7hIz^EY=mH`li^PC271
+Z33 I7?eCQbT9Z[aeZ]<=K><Z63
+Z34 V_ZLhl=B]B@eZjL_b_XYZC2
+R4
+R5
+R6
+R7
+L0 62
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!s101 -O0
+R12
+vstack
+!i10b 1
+Z35 !s100 ]3WH78K?mR8^_=6z[Yk_j2
+Z36 IRomoYiMU=D@RI4bNdUW^G1
+Z37 V<^fGDCV6J6H2aD8eESm[k2
+R4
+R5
+R6
+R7
+L0 11
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!s101 -O0
+R12
+vtest
+!i10b 1
+Z38 !s100 1=mLf5j5iVMOnQE3_51BF1
+Z39 IK8E<2M7E`OFmUmkS8N[1Q0
+Z40 Vk<3<[f=78GX=_HO53D;7>3
+R4
+R5
+R6
+R7
+Z41 L0 185
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!s101 -O0
+R12

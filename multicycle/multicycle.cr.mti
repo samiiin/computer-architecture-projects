@@ -1,0 +1,17 @@
+//Mac/Home/Desktop/multicycle/multicycle.v {1 {vlog -work work //Mac/Home/Desktop/multicycle/multicycle.v
+Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+-- Compiling module memory
+-- Compiling module stack
+-- Compiling module mux
+-- Compiling module register1
+-- Compiling module register2
+-- Compiling module alu
+-- Compiling module datapath
+-- Compiling module controller
+-- Compiling module multiMips
+-- Compiling module test
+
+Top level modules:
+	test
+
+} {} {}}
